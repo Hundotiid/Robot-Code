@@ -490,7 +490,8 @@ task autonomous()
 		wait1Msec(750);
 		move(0);
 		turn(350, 'r');
-		move(-127);//get the forward encoder average value, then move backwards the same amount
+		move(0);
+		wait1Msec(250);
 		resetDriveEncoder();
 		encoder_avg_val = 0;
 		while (encoder_avg_val < encoder_distance)
@@ -498,6 +499,7 @@ task autonomous()
 			encoder_front_val = abs(SensorValue[EncoderFront]);
 			encoder_back_val = abs(SensorValue[EncoderBack]);
 			encoder_avg_val = (encoder_front_val + encoder_back_val) / 2;
+			move(-127);//get the forward encoder average value, then move backwards the same amount
 		}
 		move(0);
 		clawOC(-127);
