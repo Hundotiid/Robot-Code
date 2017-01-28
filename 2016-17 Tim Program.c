@@ -76,9 +76,9 @@ void clawOC(int speed)
 
 void turn (int val, char direction)
 {
+	resetDriveEncoder();
 	if (direction == 'r')
 	{
-		resetDriveEncoder();
 		while (abs(encoder_back_val) < val || abs(encoder_front_val) < val)
 		{
 			motor[backLeft] = 127;
@@ -91,7 +91,6 @@ void turn (int val, char direction)
 	}
 	else if (direction == 'l')
 	{
-		resetDriveEncoder();
 		while (abs(encoder_back_val) < val || abs(encoder_front_val) < val)
 		{
 			motor[backLeft] = -127;
@@ -261,17 +260,7 @@ task autonomous()
 		wait1Msec(750);
 		clawOC(0);
 
-		val = 350;
-		resetDriveEncoder();
-		while (abs(encoder_back_val) < val || abs(encoder_front_val) < val)
-		{
-			motor[backLeft] = -127;
-			motor[frontLeft] = -127;
-			motor[backRight] = 127;
-			motor[frontRight] = 127;
-			encoder_back_val = SensorValue[EncoderBack];
-			encoder_front_val = SensorValue[EncoderFront];
-		}
+		turn(350, 'l');
 		ultron_front_val = SensorValue[UltronFront];
 		while (ultron_front_val > 23)
 		{
