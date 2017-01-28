@@ -74,10 +74,10 @@ void clawOC(int speed)
 	motor[Claw2] = speed;
 }
 
-void turn (int val, char direction)
+void turn (int val, int direction)
 {
 	resetDriveEncoder();
-	if (direction == 'r')
+	if (direction == 2)
 	{
 		while (abs(encoder_back_val) < val || abs(encoder_front_val) < val)
 		{
@@ -89,7 +89,7 @@ void turn (int val, char direction)
 			encoder_front_val = SensorValue[EncoderFront];
 		}
 	}
-	else if (direction == 'l')
+	else if (direction == 1)
 	{
 		while (abs(encoder_back_val) < val || abs(encoder_front_val) < val)
 		{
@@ -211,7 +211,7 @@ task autonomous()
 		clawOC(-127);
 		wait1Msec(750);
 		clawOC(0);
-		turn(350, 'r');
+		turn(350, 2);
 		ultron_front_val = SensorValue[UltronFront];
 		while (ultron_front_val > 19)
 		{
@@ -260,7 +260,7 @@ task autonomous()
 		wait1Msec(750);
 		clawOC(0);
 
-		turn(350, 'l');
+		turn(350, 1);
 		ultron_front_val = SensorValue[UltronFront];
 		while (ultron_front_val > 23)
 		{
@@ -338,7 +338,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 
-		turn(350, 'r');
+		turn(350, 2);
 
 		launch(-30);
 		move(-127/2);
@@ -375,7 +375,7 @@ task autonomous()
 
 	case 4:
 	cas4:
-		while (ultron_front_val < 20 && ultron_front_val > 50)
+		while (ultron_front_val < 20)
 		{
 			move(-127);
 			ultron_front_val = SensorValue[UltronFront];
@@ -388,12 +388,12 @@ task autonomous()
 		clawOC(-30);
 		wait1Msec(250);
 
-		turn(280, 'r');
+		turn(200, 2);
 		move(0);
 		wait1Msec(50);
 		resetDriveEncoder();
 
-		while (((1 - SensorValue[CubeSwitch]) == 0) && encoder_avg_val < 900)
+		while (((1 - SensorValue[CubeSwitch]) == 0) && encoder_avg_val < 600)
 		{
 			move(127);
 			encoder_front_val = abs(SensorValue[EncoderFront]);
@@ -413,7 +413,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		turn(300, 'l');
+		turn(300, 1);
 
 		move(-127);
 		wait1Msec(1000);
@@ -449,7 +449,7 @@ task autonomous()
 		}
 		move(0);
 		wait1Msec(50);
-		turn(280, 'l');
+		turn(280, 1);
 		move(-127);
 		wait1Msec(750);
 		move(0);
@@ -489,7 +489,7 @@ task autonomous()
 		move(127);
 		wait1Msec(750);
 		move(0);
-		turn(350, 'r');
+		turn(350, 2);
 		move(0);
 		wait1Msec(250);
 		resetDriveEncoder();
@@ -505,7 +505,7 @@ task autonomous()
 		clawOC(-127);
 		wait1Msec(300);
 		clawOC(0);
-		turn(350, 'l');
+		turn(350, 1);
 		SensorValue[CubeSwitch] = 1;
 		for (int x = 1; x <= 2; x++)
 		{
