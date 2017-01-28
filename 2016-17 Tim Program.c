@@ -338,17 +338,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 
-		val = 350;
-		resetDriveEncoder();
-		while (abs(encoder_back_val) < val || abs(encoder_front_val) < val)
-		{
-			motor[backLeft] = 127;
-			motor[frontLeft] = 127;
-			motor[backRight] = -127;
-			motor[frontRight] = -127;
-			encoder_back_val = SensorValue[EncoderBack];
-			encoder_front_val = SensorValue[EncoderFront];
-		}
+		turn(350, 'r');
 
 		launch(-30);
 		move(-127/2);
@@ -459,16 +449,7 @@ task autonomous()
 		}
 		move(0);
 		wait1Msec(50);
-		resetDriveEncoder();
-		while (abs(encoder_back_val) < val || abs(encoder_front_val) < val)
-		{
-			motor[backLeft] = -127;
-			motor[frontLeft] = -127;
-			motor[backRight] = 127;
-			motor[frontRight] = 127;
-			encoder_back_val = SensorValue[EncoderBack];
-			encoder_front_val = SensorValue[EncoderFront];
-		}
+		turn(280, 'l');
 		move(-127);
 		wait1Msec(750);
 		move(0);
