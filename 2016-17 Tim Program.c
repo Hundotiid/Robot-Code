@@ -393,7 +393,7 @@ task autonomous()
 		wait1Msec(50);
 		resetDriveEncoder();
 
-		while (((1 - SensorValue[CubeSwitch]) == 0) && encoder_avg_val < 600)
+		while (((1 - SensorValue[CubeSwitch]) == 0) && encoder_avg_val < 450)
 		{
 			move(127);
 			encoder_front_val = abs(SensorValue[EncoderFront]);
@@ -413,7 +413,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		turn(300, 1);
+		turn(200, 1);
 
 		move(-127);
 		wait1Msec(1000);
