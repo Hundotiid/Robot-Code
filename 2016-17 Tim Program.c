@@ -27,7 +27,7 @@
 int clawval;
 float launchval;
 int pot_val;
-float ultron_front_val, ultron_left_val, ultron_right_val;
+float ultron_front_val;
 int auto_throw = 0;
 const int cube = 1;
 int encoder_front_val, encoder_back_val, encoder_avg_val;
@@ -72,6 +72,13 @@ void clawOC(int speed)
 {
 	motor[Claw] = speed;
 	motor[Claw2] = speed;
+}
+
+void getDriveEncoders()
+{
+	encoder_front_val = abs(SensorValue[EncoderFront]);
+	encoder_back_val = abs(SensorValue[EncoderBack]);
+	encoder_avg_val = (encoder_front_val + encoder_back_val) / 2;
 }
 
 void turn (int val, int direction)
@@ -172,6 +179,7 @@ void pre_auton()
 		case 7:
 			displayLCDCenteredString(0, "Move Forward");
 			displayLCDCenteredString(1, "Cube");
+			break;
 
 		case 8:
 			displayLCDCenteredString(0, "Skills 1");
@@ -384,11 +392,11 @@ task autonomous()
 
 		wait1Msec(50);
 		clawOC(-127);
-		wait1Msec(650);
+		wait1Msec(250);
 		clawOC(-30);
 		wait1Msec(250);
 
-		turn(200, 2);
+		turn(300, 2);
 		move(0);
 		wait1Msec(50);
 		resetDriveEncoder();
@@ -403,7 +411,7 @@ task autonomous()
 		encoder_distance = encoder_avg_val;
 		move(0);
 		clawOC(127);
-		wait1Msec(1500);
+		wait1Msec(750);
 		clawOC(30);
 		if (auton_num == 5) goto cas5;
 		resetArmEncoder();
@@ -413,18 +421,18 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		turn(200, 1);
+		turn(250, 1);
 
 		move(-127);
 		wait1Msec(1000);
 		move(0);
-		while (pot_val < 95)
+		while (pot_val < 90)
 		{
 			launch(-127);
 			pot_val = SensorValue[Armangle];
 		}
 		clawOC(-127);
-		wait1Msec(100);
+		wait1Msec(250);
 		clawOC(0);
 		while(pot_val > 15)
 		{
@@ -489,34 +497,29 @@ task autonomous()
 		move(127);
 		wait1Msec(750);
 		move(0);
-		turn(350, 2);
+		turn(300, 2);
 		move(0);
 		wait1Msec(250);
 		resetDriveEncoder();
 		encoder_avg_val = 0;
 		while (encoder_avg_val < encoder_distance)
 		{
-			encoder_front_val = abs(SensorValue[EncoderFront]);
-			encoder_back_val = abs(SensorValue[EncoderBack]);
-			encoder_avg_val = (encoder_front_val + encoder_back_val) / 2;
-			move(-127);//get the forward encoder average value, then move backwards the same amount
+			getDriveEncoders();
+			move(-127);
 		}
 		move(0);
 		clawOC(-127);
 		wait1Msec(300);
 		clawOC(0);
-		turn(350, 1);
-		SensorValue[CubeSwitch] = 1;
+		turn(300, 1);
 		for (int x = 1; x <= 2; x++)
 		{
-			while ((1 - SensorValue[CubeSwitch]) == 0)
+			resetDriveEncoder();
+			getDriveEncoders();
+			while (encoder_avg_val < 300)
 			{
-				for (int value = 1; value <= 127; value++)
-				{
-					move(value);
-					wait1Msec(10);
-					if ((1 - SensorValue[CubeSwitch]) == 1) break;
-				}
+				move(127/2);
+				getDriveEncoders();
 			}
 			move(0);
 			wait1Msec(1000);
@@ -544,6 +547,8 @@ task autonomous()
 			}
 			launch(0);
 		}
+		move(0);
+		launch(0);
 		break;
 	}
 }
@@ -566,7 +571,7 @@ task usercontrol()
 
 		pot_val = SensorValue[Armangle];
 		ultron_front_val = SensorValue[UltronFront];//sets the values of the ultrasonic sensors to their own variables
-		ultron_left_val = SensorValue[UltronLeft];
+		getDriveEncoders();
 
 		if (vexRT[Btn8DXmtr2] == 1) auto_throw = 0;
 		if (vexRT[Btn8RXmtr2] == 1)
@@ -620,9 +625,7 @@ task usercontrol()
 
 			displayLCDNumber(1, 0, ultron_front_val);//prints the value of the front ultrasonic sensor to the LCD Screen
 			displayNextLCDString(" inches");
-			displayLCDNumber(0, 0, ultron_left_val);//displays the values of the left and right ultrasonic sensors to the LCD Screen
-			displayNextLCDString(" ");
-			displayNextLCDNumber(ultron_right_val);
+			displayLCDNumber(0, 0, encoder_avg_val);
 			displayNextLCDString(" ");
 			displayNextLCDNumber(pot_val);//displays the value of the potentiometer/angle of the arm to the LCD Screen
 		}
