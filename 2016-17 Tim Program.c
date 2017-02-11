@@ -169,8 +169,13 @@ void pre_auton()
 			auton_num++;
 		}
 
+<<<<<<< HEAD
 		if (auton_num == -1) auton_num = 10;
 		else if (auton_num == 11) auton_num = 0;
+=======
+		if (auton_num == -1) auton_num = 9;
+		else if (auton_num == 10) auton_num = 0;
+>>>>>>> origin/master
 
 		clearLCDLine(0);
 		clearLCDLine(1);
@@ -400,6 +405,7 @@ task autonomous()
 
 	case 4:
 	cas4:
+		ultron_front_val = SensorValue[UltronFront];
 		while (ultron_front_val < 20)
 		{
 			move(-127);
@@ -430,7 +436,11 @@ task autonomous()
 		move(0);
 		clawOC(127);
 		wait1Msec(950);
+<<<<<<< HEAD
 		clawOC(40);
+=======
+		clawOC(30);
+>>>>>>> origin/master
 		if (auton_num == 5) goto cas5;
 		resetArmEncoder();
 		while (pot_val < 30)
@@ -442,9 +452,9 @@ task autonomous()
 		turn(250, 1);
 
 		move(-127);
-		wait1Msec(1000);
+		wait1Msec(1250);
 		move(0);
-		while (pot_val < 90)
+		while (pot_val < 92)
 		{
 			launch(-127);
 			pot_val = SensorValue[Armangle];
@@ -544,15 +554,26 @@ task autonomous()
 		{
 			resetDriveEncoder();
 			getDriveEncoders();
-			while (encoder_avg_val < 300)
+			if (x == 1)
 			{
-				move(127/2);
-				getDriveEncoders();
+				while (encoder_avg_val < 300)
+				{
+					move(127/2);
+					getDriveEncoders();
+				}
+			}
+			else if (x == 2)
+			{
+				while (encoder_avg_val < 750)
+				{
+					move(127/2);
+					getDriveEncoders();
+				}
 			}
 			move(0);
 			wait1Msec(1000);
 			clawOC(127);
-			wait1Msec(1000);
+			wait1Msec(1250);
 			clawOC(40);
 			move(-127);
 			wait1Msec(1500);
