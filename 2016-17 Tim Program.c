@@ -169,8 +169,8 @@ void pre_auton()
 			auton_num++;
 		}
 
-		if (auton_num == -1) auton_num = 10;
-		else if (auton_num == 11) auton_num = 0;
+		if (auton_num == -1) auton_num = 11;
+		else if (auton_num == 12) auton_num = 0;
 
 		clearLCDLine(0);
 		clearLCDLine(1);
@@ -193,31 +193,36 @@ void pre_auton()
 			break;
 
 		case 4:
-			displayLCDCenteredString(0, "Right Side Cube");
+			displayLCDCenteredString(0, "Left Side Cube");
+			displayLCDCenteredString(1, "High Fence");
 			break;
 
 		case 5:
 			displayLCDCenteredString(0, "Right Side Cube");
-			displayLCDCenteredString(1, "High Fence");
 			break;
 
 		case 6:
-			displayLCDCenteredString(0, "Move Forward");
+			displayLCDCenteredString(0, "Right Side Cube");
+			displayLCDCenteredString(1, "High Fence");
 			break;
 
 		case 7:
 			displayLCDCenteredString(0, "Move Forward");
-			displayLCDCenteredString(1, "Cube");
 			break;
 
 		case 8:
-			displayLCDCenteredString(0, "Skills 1");
+			displayLCDCenteredString(0, "Move Forward");
+			displayLCDCenteredString(1, "Cube");
 			break;
 
 		case 9:
+			displayLCDCenteredString(0, "Skills 1");
+			break;
+
+		case 10:
 			displayLCDCenteredString(0, "Skills 2");
 			break;
-		case 10:
+		case 11:
 			displayLCDCenteredString(0, "Gyro Turn Test");
 			break;
 		}
@@ -235,108 +240,148 @@ task autonomous()
 	case 0: break;
 
 	case 1:
+		clawOC(-127);
+		wait1Msec(100);
+		clawOC(0);
+		wait1Msec(250);
+		launch(127);
+		wait1Msec(75);
+		launch(0);
+
+		gyroTurn(2);
+
 		resetDriveEncoder();
-		while (ultron_front_val < 30 && ultron_front_val < 60)
+		while (encoder_avg_val < 1000)
 		{
-			move(-127);
-			ultron_front_val = SensorValue[UltronFront];
-		}
-		while (ultron_front_val < 40 && ultron_front_val < 60)
-		{
-			move(-127/4);
-			ultron_front_val = SensorValue[UltronFront];
+			move(127);
+			getDriveEncoders();
 		}
 		move(0);
 
-		clawOC(-127);
-		wait1Msec(750);
-		clawOC(0);
-		turn(350, 2);
-		ultron_front_val = SensorValue[UltronFront];
-		while (ultron_front_val > 19)
+		clawOC(127);
+		wait1Msec(950);
+		clawOC(40);
+
+		resetDriveEncoder();
+		while (encoder_avg_val < 1000)
 		{
-			move(127/4);
-			ultron_front_val = SensorValue[UltronFront];
+			move(-127);
+			getDriveEncoders();
 		}
 		move(0);
 
 		resetArmEncoder();
 		while (pot_val < 45)
 		{
-			launch(-127/2);
+			launch(-127);
 			pot_val = SensorValue[Armangle];
-			clearLCDLine(0);
-			displayLCDNumber(0, 0, pot_val);
 		}
-		launch(-10);//keep the launcher motors at a consistant height
+		launch(-30);
+		wait1Msec(250);
 
-		while (ultron_front_val < 65)
-		{
-			move(-127/2);
-			ultron_front_val = SensorValue[UltronFront];
-		}
-		move(0);//stop all drive motors
-		launch(0);//stop all launcher motors
+		gyroTurn(2);
+		move(0);
 		wait1Msec(50);
-		motor[backLeft] = 127;
-		motor[frontLeft] = 127;
-		motor[backRight] = -127;
-		motor[frontRight] = -127;
-		wait1Msec(500);
-		move(0);//stop all drive motors
-		launch(0);//stop all launcher motors
+
+		resetDriveEncoder();
+		while (encoder_avg_val < 1250)
+		{
+			move(-127);
+			getDriveEncoders();
+		}
+		move(0);
+		wait1Msec(50);
+
+		while (pot_val < 90)
+		{
+			launch(-127);
+			pot_val = SensorValue[Armangle];
+		}
+		clawOC(-127);
+		wait1Msec(250);
+		clawOC(0);
+		while(pot_val > 15)
+		{
+			launch(127);
+			pot_val = SensorValue[Armangle];
+		}
+		move(0);
+		launch(0);
 		break;
 
 	case 2:
+		clawOC(-127);
+		wait1Msec(100);
+		clawOC(0);
+		wait1Msec(250);
+		launch(127);
+		wait1Msec(75);
+		launch(0);
+
+		gyroTurn(1);
+
 		resetDriveEncoder();
-		while (ultron_front_val < 38)
+		while (encoder_avg_val < 1000)
+		{
+			move(127);
+			getDriveEncoders();
+		}
+		move(0);
+
+		clawOC(127);
+		wait1Msec(950);
+		clawOC(40);
+
+		resetDriveEncoder();
+		while (encoder_avg_val < 1000)
 		{
 			move(-127);
-			ultron_front_val = SensorValue[UltronFront];
+			getDriveEncoders();
 		}
 		move(0);
 
-		clawOC(-127);
-		wait1Msec(750);
-		clawOC(0);
-
-		turn(350, 1);
-		ultron_front_val = SensorValue[UltronFront];
-		while (ultron_front_val > 23)
+		resetArmEncoder();
+		while (pot_val < 45)
 		{
-			move(127/2);
-			ultron_front_val = SensorValue[UltronFront];
-		}
-
-		move(0);
-
-		while (pot_val < 25)
-		{
-			launch(-127/2);
+			launch(-127);
 			pot_val = SensorValue[Armangle];
-			clearLCDLine(0);
-			displayLCDNumber(0, 0, pot_val);
 		}
-		launch(-20);//keep the launcher motors at a consistant height
+		launch(-30);
+		wait1Msec(250);
 
-		while (ultron_front_val < 65)
-		{
-			move(-127/2);
-			ultron_front_val = SensorValue[UltronFront];
-		}
-		move(0);//stop all drive motors
-		launch(0);//stop all launcher motors
+		gyroTurn(1);
+		move(0);
 		wait1Msec(50);
-		motor[backLeft] = -127;
-		motor[frontLeft] = -127;
-		motor[backRight] = 127;
-		motor[frontRight] = 127;
-		wait1Msec(500);
-		move(0);//stop all drive motors
-		launch(0);//stop all launcher motors
+
+		resetDriveEncoder();
+		while (encoder_avg_val < 1250)
+		{
+			move(-127);
+			getDriveEncoders();
+		}
+		move(0);
+		wait1Msec(50);
+
+		while (pot_val < 90)
+		{
+			launch(-127);
+			pot_val = SensorValue[Armangle];
+		}
+		clawOC(-127);
+		wait1Msec(250);
+		clawOC(0);
+		while(pot_val > 15)
+		{
+			launch(127);
+			pot_val = SensorValue[Armangle];
+		}
+		move(0);
+		launch(0);
 		break;
 
-	case 3:
+
+
+	case 4:
 		ultron_front_val = SensorValue[UltronFront];
 		while (ultron_front_val < 20)
 		{
@@ -351,7 +396,7 @@ task autonomous()
 		clawOC(-30);
 		wait1Msec(250);
 
-		turn(300, 1);
+		gyroTurn(1);
 		move(0);
 		wait1Msec(50);
 		resetDriveEncoder();
@@ -368,7 +413,7 @@ task autonomous()
 		clawOC(127);
 		wait1Msec(950);
 		clawOC(40);
-		if (auton_num == 5) goto cas5;
+		if (auton_num == 6) goto cas6;
 		resetArmEncoder();
 		while (pot_val < 30)
 		{
@@ -376,7 +421,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		turn(250, 2);
+		gyroTurn(2);
 
 		move(-127);
 		wait1Msec(1000);
@@ -398,8 +443,8 @@ task autonomous()
 		launch(0);
 		break;
 
-	case 4:
-	cas4:
+	case 5:
+	cas5:
 		ultron_front_val = SensorValue[UltronFront];
 		while (ultron_front_val < 20)
 		{
@@ -432,7 +477,7 @@ task autonomous()
 		clawOC(127);
 		wait1Msec(950);
 		clawOC(40);
-		if (auton_num == 5) goto cas5;
+		if (auton_num == 6) goto cas6;
 		resetArmEncoder();
 		while (pot_val < 30)
 		{
@@ -463,9 +508,9 @@ task autonomous()
 		if (auton_num == 8) goto cas8;
 		break;
 
-	case 5:
-		goto cas4;
-	cas5:
+	case 6:
+		goto cas5;
+	cas6:
 
 		resetDriveEncoder();
 
@@ -507,21 +552,101 @@ task autonomous()
 		launch(0);
 		break;
 
-	case 6:
+	case 7:
 		move(127);
 		wait1Msec(1500);
 		move(0);
 		break;
 
-	case 7:
+	case 8:
 		wait1Msec(5000);
 		move(127);
 		wait1Msec(2500);
 		move(0);
 		break;
 
-	case 8:
-		goto cas4;
+	case 9:
+	resetDriveEncoder();
+		while (encoder_avg_val < 550)
+		{
+			move(-127);
+			getDriveEncoders();
+		}
+		move(0);
+
+		clawOC(-127);
+		wait1Msec(250);
+		clawOC(0);
+
+		for (int x = 1; x <= 2; x++)
+		{
+			resetDriveEncoder();
+			getDriveEncoders();
+			if (x == 1)
+			{
+				while (encoder_avg_val < 300)
+				{
+					move(127/2);
+					getDriveEncoders();
+				}
+			}
+			else if (x == 2)
+			{
+				while (encoder_avg_val < 800)
+				{
+					move(127/2);
+					getDriveEncoders();
+				}
+			}
+			move(0);
+			wait1Msec(750);
+			clawOC(127);
+			wait1Msec(1250);
+			clawOC(40);
+			move(-127);
+			wait1Msec(1500);
+			move(0);
+			resetArmEncoder();
+			while (pot_val < 95)
+			{
+				launch(-127);
+				pot_val = SensorValue[Armangle];
+			}
+			clawOC(-127);
+			wait1Msec(100);
+			clawOC(0);
+			launch(0);
+			wait1Msec(50);
+			if (x == 2)
+			{
+				move(127/2);
+				wait1Msec(50);
+				move(0);
+			}
+			while (pot_val > 15)
+			{
+				launch(127);
+				pot_val = SensorValue[Armangle];
+			}
+			launch(0);
+			wait1Msec(200);
+		}
+
+		while (encoder_avg_val < 850)
+		{
+			move(127);
+			getDriveEncoders();
+		}
+		move(0);
+		wait1Msec(50);
+		while (pot_val < 20)
+		{
+			launch(-127);
+			pot_val = SensorValue[Armangle];
+		}
+		launch(0);
+
+		goto cas5;
 	cas8:
 		move(127);
 		wait1Msec(750);
@@ -541,59 +666,13 @@ task autonomous()
 		wait1Msec(300);
 		clawOC(0);
 		turn(300, 1);
-		for (int x = 1; x <= 2; x++)
-		{
-			resetDriveEncoder();
-			getDriveEncoders();
-			if (x == 1)
-			{
-				while (encoder_avg_val < 300)
-				{
-					move(127/2);
-					getDriveEncoders();
-				}
-			}
-			else if (x == 2)
-			{
-				while (encoder_avg_val < 750)
-				{
-					move(127/2);
-					getDriveEncoders();
-				}
-			}
-			move(0);
-			wait1Msec(1000);
-			clawOC(127);
-			wait1Msec(1250);
-			clawOC(40);
-			move(-127);
-			wait1Msec(1500);
-			move(0);
-			resetArmEncoder();
-			while (pot_val < 95)
-			{
-				launch(-127);
-				pot_val = SensorValue[Armangle];
-			}
-			clawOC(-127);
-			wait1Msec(100);
-			clawOC(0);
-			launch(0);
-			wait1Msec(50);
-			while (pot_val > 15)
-			{
-				launch(127);
-				pot_val = SensorValue[Armangle];
-			}
-			launch(0);
-		}
 		move(0);
 		launch(0);
 		break;
 
-	case 9:
+	case 10:
 		clawOC(-127);
-		wait1Msec(250);
+		wait1Msec(100);
 		clawOC(0);
 		wait1Msec(250);
 		launch(127);
@@ -623,18 +702,20 @@ task autonomous()
 		move(0);
 
 		resetArmEncoder();
-		while (pot_val < 30)
+		while (pot_val < 45)
 		{
 			launch(-127);
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		wait1Msec(50);
+		wait1Msec(250);
 
 		gyroTurn(1);
+		move(0);
+		wait1Msec(50);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 900)
+		while (encoder_avg_val < 1250)
 		{
 			move(-127);
 			getDriveEncoders();
@@ -659,7 +740,7 @@ task autonomous()
 		launch(0);
 		break;
 
-	case 10:
+	case 11:
 		while(abs(SensorValue[Gyro]) < 750)
 		{
 			motor[backLeft] = 127;
