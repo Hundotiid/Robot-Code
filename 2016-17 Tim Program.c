@@ -169,13 +169,8 @@ void pre_auton()
 			auton_num++;
 		}
 
-<<<<<<< HEAD
 		if (auton_num == -1) auton_num = 10;
 		else if (auton_num == 11) auton_num = 0;
-=======
-		if (auton_num == -1) auton_num = 9;
-		else if (auton_num == 10) auton_num = 0;
->>>>>>> origin/master
 
 		clearLCDLine(0);
 		clearLCDLine(1);
@@ -436,11 +431,7 @@ task autonomous()
 		move(0);
 		clawOC(127);
 		wait1Msec(950);
-<<<<<<< HEAD
 		clawOC(40);
-=======
-		clawOC(30);
->>>>>>> origin/master
 		if (auton_num == 5) goto cas5;
 		resetArmEncoder();
 		while (pot_val < 30)
