@@ -80,11 +80,11 @@ void getDriveEncoders()
 	encoder_avg_val = (encoder_front_val + encoder_back_val) / 2;
 }
 
-void gyroTurn(int direction)
+void gyroTurn(int direction, int turnval)//750 for 90 degree turn
 {
 	int newGyroVal;
-	if (direction == 1) newGyroVal = SensorValue[Gyro] - 750;
-	else if (direction == 2) newGyroVal = SensorValue[Gyro] + 750;
+	if (direction == 1) newGyroVal = SensorValue[Gyro] - turnval;
+	else if (direction == 2) newGyroVal = SensorValue[Gyro] + turnval;
 	if (direction == 1)
 	{
 		while (SensorValue[Gyro] > newGyroVal)
@@ -219,7 +219,7 @@ task autonomous()
 		wait1Msec(75);
 		launch(0);
 
-		gyroTurn(2);
+		gyroTurn(2, 750);
 
 		resetDriveEncoder();
 		while (encoder_avg_val < 1000)
@@ -250,7 +250,7 @@ task autonomous()
 		launch(-30);
 		wait1Msec(250);
 
-		gyroTurn(2);
+		gyroTurn(2, 750);
 		move(0);
 		wait1Msec(50);
 
@@ -289,7 +289,7 @@ task autonomous()
 		wait1Msec(75);
 		launch(0);
 
-		gyroTurn(1);
+		gyroTurn(1, 750);
 
 		resetDriveEncoder();
 		while (encoder_avg_val < 1000)
@@ -320,7 +320,7 @@ task autonomous()
 		launch(-30);
 		wait1Msec(250);
 
-		gyroTurn(1);
+		gyroTurn(1, 750);
 		move(0);
 		wait1Msec(50);
 
@@ -367,7 +367,7 @@ task autonomous()
 		clawOC(-30);
 		wait1Msec(250);
 
-		gyroTurn(1);
+		gyroTurn(1, 750);
 		move(0);
 		wait1Msec(50);
 		resetDriveEncoder();
@@ -392,7 +392,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		gyroTurn(2);
+		gyroTurn(2, 750);
 
 		move(-127);
 		wait1Msec(1000);
@@ -433,7 +433,7 @@ task autonomous()
 		wait1Msec(75);
 		launch(0);
 
-		gyroTurn(2);
+		gyroTurn(2, 750);
 		move(0);
 		wait1Msec(50);
 		resetDriveEncoder();
@@ -456,7 +456,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		gyroTurn(1);
+		gyroTurn(1, 750);
 
 		move(-127);
 		wait1Msec(1250);
@@ -502,7 +502,7 @@ task autonomous()
 		launch(-30);
 		wait1Msec(50);
 
-		gyroTurn(1);
+		gyroTurn(1, 750);
 		move(-127);
 		wait1Msec(950);
 		move(0);
@@ -622,7 +622,7 @@ task autonomous()
 		move(127);
 		wait1Msec(750);
 		move(0);
-		gyroTurn(2);
+		gyroTurn(2, 750);
 		move(0);
 		wait1Msec(250);
 		resetDriveEncoder();
@@ -636,7 +636,7 @@ task autonomous()
 		clawOC(-127);
 		wait1Msec(300);
 		clawOC(0);
-		gyroTurn(1);
+		gyroTurn(1, 750);
 		move(0);
 		launch(0);
 		break;
@@ -650,7 +650,7 @@ task autonomous()
 		wait1Msec(75);
 		launch(0);
 
-		gyroTurn(1);
+		gyroTurn(1, 750);
 
 		resetDriveEncoder();
 		while (encoder_avg_val < 1000)
@@ -681,7 +681,7 @@ task autonomous()
 		launch(-30);
 		wait1Msec(250);
 
-		gyroTurn(1);
+		gyroTurn(1, 750);
 		move(0);
 		wait1Msec(50);
 
