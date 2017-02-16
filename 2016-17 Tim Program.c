@@ -80,35 +80,6 @@ void getDriveEncoders()
 	encoder_avg_val = (encoder_front_val + encoder_back_val) / 2;
 }
 
-void turn (int val, int direction)
-{
-	resetDriveEncoder();
-	if (direction == 2)
-	{
-		while (abs(encoder_back_val) < val || abs(encoder_front_val) < val)
-		{
-			motor[backLeft] = 127;
-			motor[frontLeft] = 127;
-			motor[backRight] = -127;
-			motor[frontRight] = -127;
-			encoder_back_val = SensorValue[EncoderBack];
-			encoder_front_val = SensorValue[EncoderFront];
-		}
-	}
-	else if (direction == 1)
-	{
-		while (abs(encoder_back_val) < val || abs(encoder_front_val) < val)
-		{
-			motor[backLeft] = -127;
-			motor[frontLeft] = -127;
-			motor[backRight] = 127;
-			motor[frontRight] = 127;
-			encoder_back_val = SensorValue[EncoderBack];
-			encoder_front_val = SensorValue[EncoderFront];
-		}
-	}
-}
-
 void gyroTurn(int direction)
 {
 	int newGyroVal;
@@ -485,7 +456,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		turn(250, 1);
+		gyroTurn(1);
 
 		move(-127);
 		wait1Msec(1250);
@@ -531,7 +502,7 @@ task autonomous()
 		launch(-30);
 		wait1Msec(50);
 
-		turn(280, 1);
+		gyroTurn(1);
 		move(-127);
 		wait1Msec(950);
 		move(0);
@@ -651,7 +622,7 @@ task autonomous()
 		move(127);
 		wait1Msec(750);
 		move(0);
-		turn(300, 2);
+		gyroTurn(2);
 		move(0);
 		wait1Msec(250);
 		resetDriveEncoder();
@@ -665,7 +636,7 @@ task autonomous()
 		clawOC(-127);
 		wait1Msec(300);
 		clawOC(0);
-		turn(300, 1);
+		gyroTurn(1);
 		move(0);
 		launch(0);
 		break;
