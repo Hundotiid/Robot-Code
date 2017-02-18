@@ -164,7 +164,7 @@ void pre_auton()
 			break;
 
 		case 4:
-			displayLCDCenteredString(0, "Left Side Cube");
+			displayLCDCenteredString(0, "Left Side Cube");//Doesn't exist yet
 			displayLCDCenteredString(1, "High Fence");
 			break;
 
@@ -193,10 +193,12 @@ void pre_auton()
 		case 10:
 			displayLCDCenteredString(0, "Skills 2");
 			break;
+
 		case 11:
 			displayLCDCenteredString(0, "Gyro Turn Test");
 			break;
 		}
+		displayNextLCDNumber(auton_num);
 	}
 
 	clearLCDLine(0);
@@ -352,7 +354,7 @@ task autonomous()
 
 
 
-	case 4:
+	case 3:
 		ultron_front_val = SensorValue[UltronFront];
 		while (ultron_front_val < 20)
 		{
