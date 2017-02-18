@@ -749,7 +749,7 @@ task usercontrol()
 		if (vexRT[Btn6DXmtr2] == 1) resetArmEncoder();
 		if (vexRT[Btn8D] == 1) resetDriveEncoder();
 		if (vexRT[Btn8DXmtr2] == 1) auto_throw = 0;
-		if (vexRT[Btn8LXmtr2] == 1) gyroTurn(2, 375);
+		if (vexRT[Btn8LXmtr2] == 1) gyroTurn(2, 185);
 
 		if (vexRT[Btn8RXmtr2] == 1)
 		{
