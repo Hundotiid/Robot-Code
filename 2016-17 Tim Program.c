@@ -198,7 +198,6 @@ void pre_auton()
 			displayLCDCenteredString(0, "Gyro Turn Test");
 			break;
 		}
-		displayNextLCDNumber(auton_num);
 	}
 
 	clearLCDLine(0);
