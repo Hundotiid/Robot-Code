@@ -803,6 +803,7 @@ task usercontrol()
 
 			displayLCDNumber(1, 0, ultron_front_val);//prints the value of the front ultrasonic sensor to the LCD Screen
 			displayNextLCDString(" inches");
+
 			displayLCDNumber(0, 0, SensorValue[Gyro]);
 			displayNextLCDString(" ");
 			displayNextLCDNumber(encoder_avg_val);
