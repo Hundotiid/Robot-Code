@@ -80,29 +80,47 @@ void getDriveEncoders()
 	encoder_avg_val = (encoder_front_val + encoder_back_val) / 2;
 }
 
-void gyroTurn(int direction, int turnval)//750 for 90 degree turn
+void turnL(int speed)
+{
+	motor[backLeft] = -speed;
+	motor[frontLeft] = -speed;
+	motor[backRight] = speed;
+	motor[frontRight] = speed;
+}
+
+void turnR(int speed)
+{
+	motor[backLeft] = speed;
+	motor[frontLeft] = speed;
+	motor[backRight] = -speed;
+	motor[frontRight] = -speed;
+}
+
+void gyroTurn(int direction, int turnval)//degrees of turn * 10 for turn
 {
 	int newGyroVal;
 	if (direction == 1) newGyroVal = SensorValue[Gyro] - turnval;
 	else if (direction == 2) newGyroVal = SensorValue[Gyro] + turnval;
 	if (direction == 1)
 	{
-		while (SensorValue[Gyro] > newGyroVal)
+		while (SensorValue[Gyro] > (newGyroVal + 250)) turnL(127);
+		move(0);
+		wait1Msec(100);
+		while (SensorValue[Gyro] != newGyroVal)
 		{
-			motor[backLeft] = -127;
-			motor[frontLeft] = -127;
-			motor[backRight] = 127;
-			motor[frontRight] = 127;
+			if (SensorValue[Gyro] > newGyroVal) turnL(35);
+			else if (SensorValue[Gyro] < newGyroVal) turnR(35);
 		}
 	}
 	else if (direction == 2)
 	{
-		while (SensorValue[Gyro] < newGyroVal)
+		while (SensorValue[Gyro] < (newGyroVal - 250)) turnR(127);
+		move(0);
+		wait1Msec(100);
+		while (SensorValue[Gyro] != newGyroVal)
 		{
-			motor[backLeft] = 127;
-			motor[frontLeft] = 127;
-			motor[backRight] = -127;
-			motor[frontRight] = -127;
+			if (SensorValue[Gyro] > newGyroVal) turnL(35);
+			else if (SensorValue[Gyro] < newGyroVal) turnR(35);
 		}
 	}
 }
@@ -220,7 +238,7 @@ task autonomous()
 		wait1Msec(75);
 		launch(0);
 
-		gyroTurn(2, 750);
+		gyroTurn(2, 900);
 
 		resetDriveEncoder();
 		while (encoder_avg_val < 1000)
@@ -251,7 +269,7 @@ task autonomous()
 		launch(-30);
 		wait1Msec(250);
 
-		gyroTurn(2, 750);
+		gyroTurn(2, 900);
 		move(0);
 		wait1Msec(50);
 
@@ -290,7 +308,7 @@ task autonomous()
 		wait1Msec(75);
 		launch(0);
 
-		gyroTurn(1, 750);
+		gyroTurn(1, 900);
 
 		resetDriveEncoder();
 		while (encoder_avg_val < 1000)
@@ -321,7 +339,7 @@ task autonomous()
 		launch(-30);
 		wait1Msec(250);
 
-		gyroTurn(1, 750);
+		gyroTurn(1, 900);
 		move(0);
 		wait1Msec(50);
 
@@ -368,7 +386,7 @@ task autonomous()
 		clawOC(-30);
 		wait1Msec(250);
 
-		gyroTurn(1, 750);
+		gyroTurn(1, 900);
 		move(0);
 		wait1Msec(50);
 		resetDriveEncoder();
@@ -393,7 +411,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		gyroTurn(2, 750);
+		gyroTurn(2, 900);
 
 		move(-127);
 		wait1Msec(1000);
@@ -434,7 +452,7 @@ task autonomous()
 		wait1Msec(75);
 		launch(0);
 
-		gyroTurn(2, 750);
+		gyroTurn(2, 900);
 		move(0);
 		wait1Msec(50);
 		resetDriveEncoder();
@@ -457,7 +475,7 @@ task autonomous()
 			pot_val = SensorValue[Armangle];
 		}
 		launch(-30);
-		gyroTurn(1, 750);
+		gyroTurn(1, 900);
 
 		move(-127);
 		wait1Msec(1250);
@@ -503,7 +521,7 @@ task autonomous()
 		launch(-30);
 		wait1Msec(50);
 
-		gyroTurn(1, 750);
+		gyroTurn(1, 900);
 		move(-127);
 		wait1Msec(950);
 		move(0);
@@ -623,7 +641,7 @@ task autonomous()
 		move(127);
 		wait1Msec(750);
 		move(0);
-		gyroTurn(2, 750);
+		gyroTurn(2, 900);
 		move(0);
 		wait1Msec(250);
 		resetDriveEncoder();
@@ -637,7 +655,7 @@ task autonomous()
 		clawOC(-127);
 		wait1Msec(300);
 		clawOC(0);
-		gyroTurn(1, 750);
+		gyroTurn(1, 900);
 		move(0);
 		launch(0);
 		break;
@@ -651,7 +669,7 @@ task autonomous()
 		wait1Msec(75);
 		launch(0);
 
-		gyroTurn(1, 750);
+		gyroTurn(1, 900);
 
 		resetDriveEncoder();
 		while (encoder_avg_val < 1000)
@@ -682,7 +700,7 @@ task autonomous()
 		launch(-30);
 		wait1Msec(250);
 
-		gyroTurn(1, 750);
+		gyroTurn(1, 900);
 		move(0);
 		wait1Msec(50);
 
@@ -713,13 +731,7 @@ task autonomous()
 		break;
 
 	case 11:
-		while(abs(SensorValue[Gyro]) < 750)
-		{
-			motor[backLeft] = 127;
-			motor[frontLeft] = 127;
-			motor[backRight] = -127;
-			motor[frontRight] = -127;
-		}
+		gyroTurn(2, 900);
 		move(0);
 		break;
 	}
