@@ -35,6 +35,7 @@ int auton_num;
 const int BtnLeft = 1;
 const int BtnCenter = 2;
 const int BtnRight = 4;
+int newGyroVal = 0;
 
 void resetDriveEncoder()
 {
@@ -98,9 +99,11 @@ void turnR(int speed)
 
 void gyroTurn(int direction, int turnval)//degrees of turn * 10 for turn
 {
-	int newGyroVal;
-	if (direction == 1) newGyroVal = SensorValue[Gyro] - turnval;
-	else if (direction == 2) newGyroVal = SensorValue[Gyro] + turnval;
+	if (direction == 1) newGyroVal -= turnval;
+	else if (direction == 2) newGyroVal += turnval;
+
+	/*if (direction == 1)newGyroVal = SensorValue[Gyro] - turnval;
+	else if (direction == 2) newGyroVal = SensorValue[Gyro] + turnval;*/
 	if (direction == 1)
 	{
 		while (SensorValue[Gyro] > (newGyroVal + 250)) turnL(127);
@@ -141,7 +144,6 @@ void pre_auton()
 	clearLCDLine(0);
 	clearLCDLine(1);
 	auton_num = 0;
-	SensorValue[Gyro] = 0;
 	bLCDBacklight = true;
 	displayLCDCenteredString(0, "Stop");
 	while (nLCDButtons != BtnCenter)
@@ -231,7 +233,7 @@ task autonomous()
 
 	case 1:
 		clawOC(-127);
-		wait1Msec(100);
+		wait1Msec(250);
 		clawOC(0);
 		wait1Msec(250);
 		launch(127);
@@ -241,7 +243,7 @@ task autonomous()
 		gyroTurn(2, 900);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1000)
+		while (encoder_avg_val < 900)
 		{
 			move(127);
 			getDriveEncoders();
@@ -274,7 +276,7 @@ task autonomous()
 		wait1Msec(50);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1250)
+		while (encoder_avg_val < 900)
 		{
 			move(-127);
 			getDriveEncoders();
@@ -556,7 +558,7 @@ task autonomous()
 		break;
 
 	case 9:
-	resetDriveEncoder();
+		resetDriveEncoder();
 		while (encoder_avg_val < 550)
 		{
 			move(-127);
@@ -759,10 +761,15 @@ task usercontrol()
 
 		if (vexRT[Btn7UXmtr2] == 1)pre_auton();
 
-		if (vexRT[Btn6DXmtr2] == 1) resetArmEncoder();
-		if (vexRT[Btn8D] == 1) resetDriveEncoder();
+		if (vexRT[Btn6DXmtr2] == 1)
+		{
+			resetArmEncoder();
+			resetDriveEncoder();
+			SensorValue[Gyro] = 0;
+			newGyroVal = 0;
+		}
 		if (vexRT[Btn8DXmtr2] == 1) auto_throw = 0;
-		if (vexRT[Btn8LXmtr2] == 1) gyroTurn(2, 185);
+		if (vexRT[Btn8LXmtr2] == 1) gyroTurn(2, 450);
 
 		if (vexRT[Btn8RXmtr2] == 1)
 		{
