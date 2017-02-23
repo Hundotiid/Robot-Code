@@ -102,8 +102,6 @@ void gyroTurn(int direction, int turnval)//degrees of turn * 10 for turn
 	if (direction == 1) newGyroVal -= turnval;
 	else if (direction == 2) newGyroVal += turnval;
 
-	/*if (direction == 1)newGyroVal = SensorValue[Gyro] - turnval;
-	else if (direction == 2) newGyroVal = SensorValue[Gyro] + turnval;*/
 	if (direction == 1)
 	{
 		while (SensorValue[Gyro] > (newGyroVal + 250)) turnL(127);
