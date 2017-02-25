@@ -557,19 +557,19 @@ task autonomous()
 
 	case 9:
 		resetDriveEncoder();
-		while (encoder_avg_val < 750)
+		while (encoder_avg_val < 550)
 		{
 			move(-127);
 			getDriveEncoders();
 		}
 		move(0);
 
-		for (int x = 1; x <= 2; x++)
-		{
 		clawOC(-127);
-		wait1Msec(275);
+		wait1Msec(250);
 		clawOC(0);
 
+		for (int x = 1; x <= 2; x++)
+		{
 			resetDriveEncoder();
 			getDriveEncoders();
 			if (x == 1)
