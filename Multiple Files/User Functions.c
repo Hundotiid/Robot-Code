@@ -70,8 +70,8 @@ void gyroTurn(int direction, int turnval)//degrees of turn * 10 for turn
 		wait1Msec(100);
 		while (SensorValue[Gyro] != newGyroVal)
 		{
-			if (SensorValue[Gyro] > newGyroVal) turnL(40);
-			else if (SensorValue[Gyro] < newGyroVal) turnR(40);
+			if (SensorValue[Gyro] > newGyroVal) turnL(50);
+			else if (SensorValue[Gyro] < newGyroVal) turnR(50);
 		}
 	}
 	else if (direction == 2)
@@ -81,8 +81,8 @@ void gyroTurn(int direction, int turnval)//degrees of turn * 10 for turn
 		wait1Msec(100);
 		while (SensorValue[Gyro] != newGyroVal)
 		{
-			if (SensorValue[Gyro] > newGyroVal) turnL(40);
-			else if (SensorValue[Gyro] < newGyroVal) turnR(40);
+			if (SensorValue[Gyro] > newGyroVal) turnL(50);
+			else if (SensorValue[Gyro] < newGyroVal) turnR(50);
 		}
 	}
 }

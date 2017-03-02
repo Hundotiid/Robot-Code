@@ -440,7 +440,7 @@ task autonomous()
 
 	case 10:
 		clawOC(-127);
-		wait1Msec(200);
+		wait1Msec(400);
 		clawOC(0);
 		wait1Msec(250);
 		launch(127);
