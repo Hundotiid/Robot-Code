@@ -1,0 +1,13 @@
+int clawval;
+float launchval;
+int pot_val;
+float ultron_front_val;
+int auto_throw = 0;
+const int cube = 1;
+int encoder_front_val, encoder_back_val, encoder_avg_val;
+int encoder_distance;
+int auton_num;
+const int BtnLeft = 1;
+const int BtnCenter = 2;
+const int BtnRight = 4;
+int newGyroVal = 0;

@@ -567,6 +567,9 @@ task autonomous()
 		clawOC(-127);
 		wait1Msec(250);
 		clawOC(0);
+		launch(127);
+		wait1Msec(75);
+		launch(0);
 
 		for (int x = 1; x <= 2; x++)
 		{
@@ -662,7 +665,7 @@ task autonomous()
 
 	case 10:
 		clawOC(-127);
-		wait1Msec(100);
+		wait1Msec(200);
 		clawOC(0);
 		wait1Msec(250);
 		launch(127);
@@ -672,8 +675,8 @@ task autonomous()
 		gyroTurn(1, 900);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1000)
-		{
+		while (encoder_avg_val < 1250)//changed value from 1000 so it moves farther,
+		{//still needs to be tested if it is correct for the back stars
 			move(127);
 			getDriveEncoders();
 		}
@@ -684,12 +687,13 @@ task autonomous()
 		clawOC(40);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1000)
+		while (encoder_avg_val < 1250)//same as the previous comment
 		{
 			move(-127);
 			getDriveEncoders();
 		}
 		move(0);
+		wait1Msec(250);
 
 		resetArmEncoder();
 		while (pot_val < 45)
@@ -713,14 +717,16 @@ task autonomous()
 		move(0);
 		wait1Msec(50);
 
-		while (pot_val < 90)
-		{
-			launch(-127);
-			pot_val = SensorValue[Armangle];
-		}
-		clawOC(-127);
-		wait1Msec(250);
-		clawOC(0);
+	while (pot_val < 95)
+			{
+				launch(-127);
+				pot_val = SensorValue[Armangle];
+			}
+			clawOC(-127);
+			wait1Msec(100);
+			clawOC(0);
+			launch(0);
+			wait1Msec(50);
 		while(pot_val > 15)
 		{
 			launch(127);
