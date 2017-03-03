@@ -675,7 +675,7 @@ task autonomous()
 		gyroTurn(1, 900);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1250)//changed value from 1000 so it moves farther,
+		while (encoder_avg_val < 1200)//changed value from 1000 so it moves farther,
 		{//still needs to be tested if it is correct for the back stars
 			move(127);
 			getDriveEncoders();
@@ -687,7 +687,7 @@ task autonomous()
 		clawOC(40);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1250)//same as the previous comment
+		while (encoder_avg_val < 1200)//same as the previous comment
 		{
 			move(-127);
 			getDriveEncoders();
