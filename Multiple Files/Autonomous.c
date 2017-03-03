@@ -442,6 +442,10 @@ task autonomous()
 		clawOC(-127);
 		wait1Msec(400);
 		clawOC(0);
+		wait1Msec(200);
+		clawOC(127);
+		wait1Msec(75);
+		clawOC(0);
 		wait1Msec(250);
 		launch(127);
 		wait1Msec(75);
