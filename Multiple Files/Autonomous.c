@@ -466,7 +466,7 @@ task autonomous()
 		clawOC(40);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1300)
+		while (encoder_avg_val < 1100)
 		{
 			move(-127);
 			getDriveEncoders();
