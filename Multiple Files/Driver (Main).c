@@ -49,7 +49,7 @@ task usercontrol()
 
 		if (vexRT[Btn7UXmtr2] == 1)pre_auton();
 
-		if (vexRT[Btn6DXmtr2] == 1)
+		if (vexRT[Btn6D] == 1)
 		{
 			resetArmEncoder();
 			resetDriveEncoder();

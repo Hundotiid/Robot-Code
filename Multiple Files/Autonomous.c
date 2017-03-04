@@ -270,7 +270,7 @@ task autonomous()
 		}
 		move(0);
 		launch(0);
-		if (auton_num == 8) goto cas8;
+		if (auton_num == 9) goto cas9;
 		break;
 
 	case 6:
@@ -332,27 +332,27 @@ task autonomous()
 
 	case 9:
 		resetDriveEncoder();
-		while (encoder_avg_val < 550)
+		while (encoder_avg_val < 650)
 		{
 			move(-127);
 			getDriveEncoders();
 		}
 		move(0);
 
-		clawOC(-127);
-		wait1Msec(250);
-		clawOC(0);
 		launch(127);
 		wait1Msec(75);
 		launch(0);
 
 		for (int x = 1; x <= 2; x++)
 		{
+			clawOC(-127);
+			wait1Msec(250);
+			clawOC(0);
 			resetDriveEncoder();
 			getDriveEncoders();
 			if (x == 1)
 			{
-				while (encoder_avg_val < 300)
+				while (encoder_avg_val < 400)
 				{
 					move(127/2);
 					getDriveEncoders();
@@ -415,7 +415,7 @@ task autonomous()
 		launch(0);
 
 		goto cas5;
-	cas8:
+	cas9:
 		move(127);
 		wait1Msec(750);
 		move(0);
@@ -454,7 +454,7 @@ task autonomous()
 		gyroTurn(1, 900);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1300)
+		while (encoder_avg_val < 1000)
 		{
 			move(127);
 			getDriveEncoders();
@@ -466,7 +466,7 @@ task autonomous()
 		clawOC(40);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1100)
+		while (encoder_avg_val < 800)
 		{
 			move(-127);
 			getDriveEncoders();
@@ -475,7 +475,7 @@ task autonomous()
 		wait1Msec(250);
 
 		resetArmEncoder();
-		while (pot_val < 45)
+		while (pot_val < 40)
 		{
 			launch(-127);
 			pot_val = SensorValue[Armangle];
@@ -488,7 +488,7 @@ task autonomous()
 		wait1Msec(50);
 
 		resetDriveEncoder();
-		while (encoder_avg_val < 1250)
+		while (encoder_avg_val < 1200)
 		{
 			move(-127);
 			getDriveEncoders();
@@ -496,23 +496,44 @@ task autonomous()
 		move(0);
 		wait1Msec(50);
 
-	while (pot_val < 95)
-			{
-				launch(-127);
-				pot_val = SensorValue[Armangle];
-			}
-			clawOC(-127);
-			wait1Msec(100);
-			clawOC(0);
-			launch(0);
-			wait1Msec(50);
-		while(pot_val > 15)
+		while (pot_val < 95)
+		{
+			launch(-127);
+			pot_val = SensorValue[Armangle];
+		}
+		clawOC(-127);
+		wait1Msec(100);
+		clawOC(0);
+		launch(0);
+		wait1Msec(50);
+		while (pot_val > 15)
 		{
 			launch(127);
 			pot_val = SensorValue[Armangle];
 		}
 		move(0);
 		launch(0);
+		wait1Msec(250);
+
+		for (int x = 1; x <= 2; x++)
+		{
+			resetDriveEncoder();
+			while (encoder_avg_val < 800)
+			{
+				move(127);
+				getDriveEncoders();
+			}
+			move(0);
+			wait1Msec(2000);
+			clawOC(127);
+			wait1Msec(250);
+			clawOC(30);
+			resetDriveEncoder();
+			while (encoder_avg_val < 800)
+			{
+			}
+		}
+
 		break;
 
 	case 11:
