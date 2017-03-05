@@ -25,6 +25,22 @@ void move(int speed)
 	motor[backRightY] = speed;
 }
 
+void turnL(int speed)
+{
+	motor[frontLeft] = -speed;
+	motor[backLeftY] = -speed;
+	motor[frontRight] = speed;
+	motor[backRightY] = speed;
+}
+
+void turnR(int speed)
+{
+	motor[frontLeft] = speed;
+	motor[backLeftY] = speed;
+	motor[frontRight] = -speed;
+	motor[backRightY] = -speed;
+}
+
 void launch(int speed)
 {
 	motor[Launcher] = speed;
@@ -46,7 +62,26 @@ void pre_auton()
 
 task autonomous()
 {
-
+	clawOC(-127);
+	wait1Msec(100);
+	clawOC(0);
+	move(127);
+	wait1Msec(750);
+	move(0);
+	clawOC(127);
+	wait1Msec(100);
+	clawOC(50);
+	wait1Msec(200);
+	move(-127);
+	wait1Msec(750);
+	move(0);
+	wait1Msec(200);
+	turnL(127);
+	wait1Msec(500);//The robot will turn and the claw will hit the back wall.
+	move(0);
+	wait1Msec(200);
+	move(-127);
+	wait1Msec(500);
 	move(0);
 }
 
